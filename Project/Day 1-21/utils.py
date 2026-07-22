@@ -1,6 +1,6 @@
 import main
 
-student = main.GraduateStudent("Mahmud", "Cs-2203009", {"Hasna": 23, "Mahmud": 45}, "No")
+student = main.GraduateStudent("Mahmud", "CS-2203009", {"Hasna": 23, "Mahmud": 45}, "No")
 student.save()
 print(student.add_marks())
 
