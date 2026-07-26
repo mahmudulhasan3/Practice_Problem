@@ -118,43 +118,70 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, field_validator, model_validator, EmailStr
 from typing import Optional
+from enum import Enum
 
 app = FastAPI()
 
+
+class CropType(Enum):
+    rice = ("rice",)
+    wheat = ("wheat",)
+    potato = "potato"
+
+
+# class Farmer(BaseModel):
+#     farmer_id: int = Field(..., gt = 0)
+#     distict: str = Field(..., min_length= 3)
+#     expected_yeild: Optional[float] = None
+#     farmer_phone : str = Field(..., min_length=11, max_length=11)
+#     season: str
+
+#     @field_validator("farmer_phone")
+#     @classmethod
+#     def check_phone(cls,value: str) -> str:
+#         if not value.isdigit():
+#             raise ValueError("Phone number cann't be an alphabet")
+#         return value
+
+#     @field_validator("season")
+#     @classmethod
+#     def check(cls, value: str) -> str:
+#         value = value.lower().strip()
+#         if value not in ["rabi","kharif","monsoon"]:
+#             raise ValueError("Season not matched")
+#         return value
+
+#     @model_validator(mode="after")
+#     def check_season(self):
+#         if self.season == "monsoon" and self.expected_yeild is None:
+#             raise ValueError("Expected yeild must be added")
+#         return self
+
+# @app.post("/farmer", status_code= 202)
+# def farmer(farmer:Farmer):
+#     return {
+#         "farmer_id": farmer.farmer_id,
+#         "farmer_phone": farmer.farmer_phone,
+#         "distict": farmer.distict,
+#         "season": farmer.season,
+#         "expected_yeild": farmer.expected_yeild
+#     }
+
+from enum import Enum
+from pydantic import BaseModel
+app = FastAPI()
+
+class CropType(str, Enum):
+    rice = "rice"
+    wheat = "wheat"
+    potato = "potato"
+
+
 class Farmer(BaseModel):
-    farmer_id: int = Field(..., gt = 0)
-    distict: str = Field(..., min_length= 3)
-    expected_yeild: Optional[float] = None
-    farmer_phone : str = Field(..., min_length=11, max_length=11)
-    season: str 
+    farmer_name: str
+    crop_name: CropType
 
-    @field_validator("farmer_phone")
-    @classmethod
-    def check_phone(cls,value: str) -> str:
-        if not value.isdigit():
-            raise ValueError("Phone number cann't be an alphabet")
-        return value
 
-    @field_validator("season")
-    @classmethod
-    def check(cls, value: str) -> str:
-        value = value.lower().strip()
-        if value not in ["rabi","kharif","monsoon"]:
-            raise ValueError("Season not matched")
-        return value
-
-    @model_validator(mode="after")
-    def check_season(self):
-        if self.season == "monsoon" and self.expected_yeild is None:
-            raise ValueError("Expected yeild must be added")
-        return self
-
-@app.post("/farmer", status_code= 202)
-def farmer(farmer:Farmer):
-    return {
-        "farmer_id": farmer.farmer_id,
-        "farmer_phone": farmer.farmer_phone,
-        "distict": farmer.distict,
-        "season": farmer.season,
-        "expected_yeild": farmer.expected_yeild
-    }
+@app.post("/farmer")
+def farmer(farmer: Farmer):
+    return {farmer.farmer_name: farmer.crop_name}
