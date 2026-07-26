@@ -115,18 +115,18 @@
 #     }
 
 
-from fastapi import FastAPI
-from pydantic import BaseModel, Field, field_validator, model_validator, EmailStr
-from typing import Optional
-from enum import Enum
+# from fastapi import FastAPI
+# from pydantic import BaseModel, Field, field_validator, model_validator, EmailStr
+# from typing import Optional
+# from enum import Enum
 
-app = FastAPI()
+# app = FastAPI()
 
 
-class CropType(Enum):
-    rice = ("rice",)
-    wheat = ("wheat",)
-    potato = "potato"
+# class CropType(Enum):
+#     rice = ("rice",)
+#     wheat = ("wheat",)
+#     potato = "potato"
 
 
 # class Farmer(BaseModel):
@@ -166,7 +166,7 @@ class CropType(Enum):
 #         "season": farmer.season,
 #         "expected_yeild": farmer.expected_yeild
 #     }
-
+from fastapi import FastAPI
 from enum import Enum
 from pydantic import BaseModel
 app = FastAPI()
