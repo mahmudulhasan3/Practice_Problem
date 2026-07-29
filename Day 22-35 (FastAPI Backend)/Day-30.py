@@ -48,22 +48,22 @@
 #     }
 
 
-import os
-import uuid
-from fastapi import FastAPI,UploadFile,File,HTTPException
+# import os
+# import uuid
+# from fastapi import FastAPI,UploadFile,File,HTTPException
 
-app = FastAPI()
+# app = FastAPI()
 
-@app.post("/upload")
-async def file_upload(file:UploadFile = File(...)):
-    extention = os.path.splitext(file.filename)[1]
-    path = os.path.join("uploads",f"{uuid.uuid4()}{extention}")
-    content = await file.read()
+# @app.post("/upload")
+# async def file_upload(file:UploadFile = File(...)):
+#     extention = os.path.splitext(file.filename)[1]
+#     path = os.path.join("uploads",f"{uuid.uuid4()}{extention}")
+#     content = await file.read()
 
-    with open(path, "wb") as f:
-        f.write(content)
-    return {
-        "message": "File uploaded successfully",
-        "original_filename": file.filename,
-        "stored_filename": path,
-    }
+#     with open(path, "wb") as f:
+#         f.write(content)
+#     return {
+#         "message": "File uploaded successfully",
+#         "original_filename": file.filename,
+#         "stored_filename": path,
+#     }
