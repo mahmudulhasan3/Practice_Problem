@@ -33,20 +33,30 @@
 #     return payload
 
 
-from jose import jwt 
-from datetime import datetime,timedelta
-from pwdlib import PasswordHash
+# from jose import jwt 
+# from datetime import datetime,timedelta
+# from pwdlib import PasswordHash
 
-SECRET_KEY = "mahmudulHasan"
-ALGORITHM = "HS256"
+# SECRET_KEY = "mahmudulHasan"
+# ALGORITHM = "HS256"
+# password_hash = PasswordHash.recommended()
+# data = {
+#     "sub": "mahmud"
+# }
+# expire = datetime.utcnow() + timedelta(minutes=30)
+# data.update({"exp":expire})
+# token = jwt.encode(
+#     data,
+#     SECRET_KEY,
+#     algorithm=ALGORITHM
+# )
 
-password_hash = PasswordHash.recommended()
-def password(password:str) -> str:
-    return password_hash.hash(password)
+# def password(password:str) -> str:
+#     return password_hash.hash(password)
 
-def verify(password:str, hashed:str) -> bool:
-    return password_hash.verify(password,hashed)
+# def verify(password:str, hashed:str) -> bool:
+#     return password_hash.verify(password,hashed)
 
-hashed = password("Mahmud")
+# hashed = password("Mahmud")
 
-print(verify("Mahmud",hashed))
+# print(verify("Mahmud",hashed))
