@@ -64,8 +64,7 @@ try:
         if prompt == "quit":
             break
         response = client.models.generate_content(
-            model= "gemini-flash-latest",
-            contents= prompt
+            model="gemini-flash-latest", contents=prompt
         )
         print(f"\nAnswer: {response.text}\n")
 
