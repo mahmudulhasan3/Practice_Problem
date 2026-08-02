@@ -179,23 +179,24 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
+model_name = os.getenv("GEMINI_MODEL")
+if model_name is None:
+    raise ValueError("GEMINI_MODEL not find in .env file")
 try:
     while True:
         prompt = input("\n\nQuestion: ")
         if prompt == "quit":
             break
         stream = client.models.generate_content_stream(
-            model= "gemini-3.1-flash-lite",
-            contents= prompt,
-            config= {
-                "system_instruction": "Answer in 3 line always"
-            }
+            model=model_name,
+            contents=prompt,
+            config={"system_instruction": "Answer in 3 line always"},
         )
         print("\nAnswer: ")
         for chunk in stream:
             if chunk.text:
                 for char in chunk.text:
-                    print(char,end="", flush=True)
+                    print(char, end="", flush=True)
                     time.sleep(0.1)
 except Exception as e:
     print("Something is wrong", e)
