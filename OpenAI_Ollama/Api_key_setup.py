@@ -248,3 +248,57 @@
 #     file.write(json.dumps(log) + "\n")
 
 
+# Streaming Advisory Bot with Usage Tracker
+
+import os
+import time
+import json
+from google import genai
+from dotenv import load_dotenv
+from datetime import datetime
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
+
+model_name = os.getenv("GEMINI_MODEL")
+if not model_name:
+    raise TypeError("Error")
+
+total = 0
+while True:
+    persona = input("\nAssitant type: ")
+    if persona.lower().strip() == "exit":
+        break
+    prompt = input("\nQuestion: ")
+    response = client.models.generate_content_stream(
+        model= model_name,
+        contents= prompt,
+        config={
+            "system_instruction": persona
+        }
+    )
+    usage_metadata = None
+    for chunk in response:
+        if chunk.text:
+            for char in chunk.text:
+                print(char,end="", flush= True)
+                time.sleep(0.1)
+        if chunk.usage_metadata:
+            usage_metadata = chunk.usage_metadata
+    if usage_metadata:
+        input_token = usage_metadata.prompt_token_count
+        output_token =usage_metadata.candidates_token_count
+        total_token = usage_metadata.total_token_count
+        date_time = datetime.now().isoformat()
+        total += total_token
+
+        log = {
+            "input_token": input_token,
+            "output_token": output_token,
+            "total_token": total_token,
+            "datetime": date_time
+            }
+        with open("prctice.jsonl","a") as file:
+            file.write(json.dumps(log) + "\n")
+print(total)
