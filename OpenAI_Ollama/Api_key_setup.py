@@ -298,3 +298,24 @@
 #         with open("prctice.jsonl", "a") as file:
 #             file.write(json.dumps(log) + "\n")
 # print(total)
+
+
+import os
+import time
+from google import genai
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
+
+stream = client.models.generate_content_stream(
+    model="gemini-3.1-flash-lite",
+    contents="What is AI?",
+)
+for chunk in stream:
+    if chunk.text:
+        for char in chunk.text:
+            print(char, end="", flush=True)
+            time.sleep(0.1)
+print()
