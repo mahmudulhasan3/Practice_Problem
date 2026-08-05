@@ -300,22 +300,46 @@
 # print(total)
 
 
-import os
-import time
-from google import genai
-from dotenv import load_dotenv
+# import os
+# import time
+# from google import genai
+# from dotenv import load_dotenv
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
 
-stream = client.models.generate_content_stream(
-    model="gemini-3.1-flash-lite",
-    contents="What is AI?",
-)
-for chunk in stream:
-    if chunk.text:
-        for char in chunk.text:
-            print(char, end="", flush=True)
-            time.sleep(0.1)
-print()
+# stream = client.models.generate_content_stream(
+#     model="gemini-3.1-flash-lite",
+#     contents="What is AI?",
+# )
+# for chunk in stream:
+#     if chunk.text:
+#         for char in chunk.text:
+#             print(char, end="", flush=True)
+#             time.sleep(0.1)
+# print()
+
+
+# import os
+# from google import genai
+# from dotenv import load_dotenv
+# from google.genai import types
+
+# load_dotenv()
+# api_keys = os.getenv("GEMINI_API_KEY")
+# model_name = os.getenv("GEMINI_MODEL")
+# client = genai.Client(api_key=api_keys)
+
+# response = client.models.generate_content(
+#     model = model_name,
+#     contents = "Please suggest a name for my cat?",
+#     config = types.GenerateContentConfig(
+#         temperature=1.2,
+#         top_k= 3,
+#     ),
+# )
+
+# print(response.text)
+
+
