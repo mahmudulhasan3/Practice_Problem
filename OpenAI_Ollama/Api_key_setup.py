@@ -343,3 +343,25 @@
 # print(response.text)
 
 
+import os
+from google import genai
+from dotenv import load_dotenv
+from google.genai import types
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+
+client = genai.Client(api_key= api_key)
+
+response = client.models.generate_content(
+    model = "gemini-3.1-flash-lite",
+    contents= "Suggest my child name",
+    config = types.GenerateContentConfig(
+        temperature= 0.3,
+        top_p = 0.9,
+        max_output_tokens= 500,
+        # frequency_penalty=0.5,
+        # presence_penalty= 0.3,
+    )
+)
+print(response.text)
