@@ -343,25 +343,65 @@
 # print(response.text)
 
 
-import os
-from google import genai
-from dotenv import load_dotenv
-from google.genai import types
+# import os
+# from google import genai
+# from dotenv import load_dotenv
+# from google.genai import types
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
 
-client = genai.Client(api_key= api_key)
+# client = genai.Client(api_key= api_key)
 
-response = client.models.generate_content(
-    model = "gemini-3.1-flash-lite",
-    contents= "Suggest my child name",
-    config = types.GenerateContentConfig(
-        temperature= 0.3,
-        top_p = 0.9,
-        max_output_tokens= 500,
-        # frequency_penalty=0.5,
-        # presence_penalty= 0.3,
-    )
-)
-print(response.text)
+# response = client.models.generate_content(
+#     model = "gemini-3.1-flash-lite",
+#     contents= "Suggest my child name",
+#     config = types.GenerateContentConfig(
+#         temperature= 0.3,
+#         top_p = 0.9,
+#         max_output_tokens= 500,
+#         # frequency_penalty=0.5,
+#         # presence_penalty= 0.3,
+#     )
+# )
+# print(response.text)
+
+
+# import os
+# import json
+# from google import genai
+# from dotenv import load_dotenv
+# from pydantic import BaseModel, Field
+# from google.genai import types
+
+
+# class Advice(BaseModel):
+#     fertilizer_name: str = Field(description="সারের নাম")
+#     dosage_grams: float = Field(description="পরিমাণ গ্রামে")
+#     interval_days: int = Field(description="কত দিন পর পর")
+
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+
+# prompt = """
+# আমার ধান ক্ষেতে ইউরিয়া সার ১৫ দিন পর পর ২০০ গ্রাম দিতে হবে।
+# """
+# response = client.models.generate_content(
+#     model="gemini-3.1-flash-lite",
+#     contents=prompt,
+#     config=types.GenerateContentConfig(
+#         response_mime_type="application/json", response_schema=Advice
+#     ),
+# )
+# print(response.text)
+
+# advice = response.parsed
+# print(advice.fertilizer_name)
+# print(advice.dosage_grams)
+# print(advice.interval_days)
+
+
+
