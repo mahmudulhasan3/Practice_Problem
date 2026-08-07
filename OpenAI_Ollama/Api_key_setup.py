@@ -404,4 +404,43 @@
 # print(advice.interval_days)
 
 
+# import os
+# from pydantic import BaseModel
+# from dotenv import load_dotenv
+# from google import genai
+# from google.genai import types
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+
+# class StudentInfo(BaseModel):
+#     name: str
+#     department: str
+#     cgpa: float
+#     skills: list[str]
+
+
+# prompt = """
+# আমার নাম Mahmud।
+# আমি CSE department-এ পড়ি।
+# আমার CGPA 3.85।
+# আমি Python, FastAPI এবং LangChain জানি।
+# """
+
+# response = client.models.generate_content(
+#     model="gemini-3.1-flash-lite",
+#     contents=prompt,
+#     config=types.GenerateContentConfig(
+#         response_mime_type="application/json", response_schema=StudentInfo
+#     ),
+# )
+# student = response.parsed
+
+# print(f"Name: {student.name}")
+# print(f"Department: {student.department}")
+# print(f"CGPA: {student.cgpa}")
+# print(f"Skills: {student.skills}")
+
 
