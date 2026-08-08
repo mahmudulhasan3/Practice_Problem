@@ -481,3 +481,44 @@ import os
 # long_text = "..."  # কোনো লম্বা article
 # prompt3 = summarizer_prompt(long_text, max_words=30)
 # print(ask_gemini(prompt3))
+
+
+import os
+import time
+from dotenv import load_dotenv
+from google import genai
+from google.genai import errors
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
+
+def call_gemini_with_retry(prompt: str,max_retries: int = 3, wait: int = 2):
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.1-flash-lite",
+                contents=prompt
+            )
+            return response.text
+
+        except errors.ClientError as e:
+            print(f"Non-retryable error (attempt {attempt}): {e}")
+            raise
+        
+        except Exception as e:
+            last_error = e
+            print(f"Retryable error (attempt {attempt}/{max_retries}): {e}")
+
+            if attempt < max_retries:
+                print(f"   Waiting {wait}s before retry...")
+                time.sleep(wait)
+
+    raise RuntimeError(
+        f"All {max_retries} attempts failed. Last error: {last_error}"
+    )
+
+
+if __name__ == "__main__":
+    result = call_gemini_with_retry("Explain RAG in one line.")
+    print(result)
