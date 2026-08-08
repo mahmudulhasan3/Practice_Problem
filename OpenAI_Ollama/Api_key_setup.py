@@ -558,3 +558,45 @@
 # with open("token_cost_calculation.jsonl", "a") as file:
 #     file.write(json.dumps(entry) + "\n")
 
+# Practice Task — Gemini Cost Tracker
+
+# import os
+# import json
+# from dotenv import load_dotenv
+# from google import genai
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# def calculate_cost(input_cost,output_cost):
+#     input_cost = (input_cost / 1000000) * 1
+#     output_cost = (output_cost / 1000000) * 2
+#     return input_cost + output_cost
+
+# count = 0
+# sum = 0
+# input_token_sum = 0
+# output_token_sum = 0
+# while True:
+#     prompt = input("Question: ")
+#     if prompt.lower().strip() == "quit":
+#         break
+#     response = client.models.generate_content(
+#         model = "gemini-3.1-flash-lite",
+#         contents = prompt,
+#     )
+#     print(f"Answer: {response.text}")
+#     input_token = response.usage_metadata.prompt_token_count
+#     output_token = response.usage_metadata.candidates_token_count
+    
+#     input_token_sum += input_token
+#     output_token_sum += output_token
+#     count += 1
+#     sum = input_token_sum + output_token_sum
+
+#     print(f"Total Request: {count}")
+#     print(f"Total input token: {input_token_sum}")
+#     print(f"Total output token: {output_token_sum}")
+#     print(f"Total token: {sum}")
+#     print(f"Total cost: {calculate_cost(input_token_sum,output_token_sum)}")
