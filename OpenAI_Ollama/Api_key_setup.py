@@ -446,7 +446,7 @@
 
 # main.py
 
-import os
+# import os
 # from dotenv import load_dotenv
 # from google import genai
 # from test import resume_analysis_prompt, classification_prompt, summarizer_prompt
@@ -483,42 +483,78 @@ import os
 # print(ask_gemini(prompt3))
 
 
-import os
-import time
-from dotenv import load_dotenv
-from google import genai
-from google.genai import errors
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
+# import os
+# import time
+# from dotenv import load_dotenv
+# from google import genai
+# from google.genai import errors
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
 
-def call_gemini_with_retry(prompt: str,max_retries: int = 3, wait: int = 2):
-    last_error = None
-    for attempt in range(1, max_retries + 1):
-        try:
-            response = client.models.generate_content(
-                model="gemini-3.1-flash-lite",
-                contents=prompt
-            )
-            return response.text
+# def call_gemini_with_retry(prompt: str,max_retries: int = 3, wait: int = 2):
+#     last_error = None
+#     for attempt in range(1, max_retries + 1):
+#         try:
+#             response = client.models.generate_content(
+#                 model="gemini-3.1-flash-lite",
+#                 contents=prompt
+#             )
+#             return response.text
 
-        except errors.ClientError as e:
-            print(f"Non-retryable error (attempt {attempt}): {e}")
-            raise
+#         except errors.ClientError as e:
+#             print(f"Non-retryable error (attempt {attempt}): {e}")
+#             raise
         
-        except Exception as e:
-            last_error = e
-            print(f"Retryable error (attempt {attempt}/{max_retries}): {e}")
+#         except Exception as e:
+#             last_error = e
+#             print(f"Retryable error (attempt {attempt}/{max_retries}): {e}")
 
-            if attempt < max_retries:
-                print(f"   Waiting {wait}s before retry...")
-                time.sleep(wait)
+#             if attempt < max_retries:
+#                 print(f"   Waiting {wait}s before retry...")
+#                 time.sleep(wait)
 
-    raise RuntimeError(
-        f"All {max_retries} attempts failed. Last error: {last_error}"
-    )
+#     raise RuntimeError(
+#         f"All {max_retries} attempts failed. Last error: {last_error}"
+#     )
 
 
-if __name__ == "__main__":
-    result = call_gemini_with_retry("Explain RAG in one line.")
-    print(result)
+# if __name__ == "__main__":
+#     result = call_gemini_with_retry("Explain RAG in one line.")
+#     print(result)
+
+
+# import os
+# import json
+# from google import genai
+# from dotenv import load_dotenv
+# from google.genai import types
+
+# def calculate_cost(input_tokens, output_tokens):
+#     input_cost = (input_tokens/1000000) * 0.30
+#     output_cost = (output_tokens/1000000) * 2.50
+#     return input_cost + output_cost
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# response = client.models.generate_content(
+#     model = "gemini-3.1-flash-lite",
+#     contents= "What is ai?",
+    
+# )
+# print(response.text)
+# input_token = response.usage_metadata.prompt_token_count
+# output_token = response.usage_metadata.candidates_token_count
+
+# entry = {
+#     "prompt": "What is ai?",
+#     "input_token": input_token,
+#     "output_token": output_token,
+#     "total_cost": calculate_cost(input_token, output_token)
+# }
+# print(entry)
+# with open("token_cost_calculation.jsonl", "a") as file:
+#     file.write(json.dumps(entry) + "\n")
+
