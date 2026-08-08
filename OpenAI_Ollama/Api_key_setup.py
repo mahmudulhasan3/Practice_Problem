@@ -444,3 +444,40 @@
 # print(f"Skills: {student.skills}")
 
 
+# main.py
+
+import os
+# from dotenv import load_dotenv
+# from google import genai
+# from test import resume_analysis_prompt, classification_prompt, summarizer_prompt
+
+# load_dotenv()
+# client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+
+# def ask_gemini(prompt: str) -> str:
+#     """Generic function - যেকোনো prompt পাঠিয়ে answer আনে"""
+#     response = client.models.generate_content(
+#         model="gemini-3.5-flash-lite", contents=prompt
+#     )
+#     return response.text
+
+
+# # --- ব্যবহার ---
+
+# # 1. Resume analysis
+# resume_text = "Built a Bangla RAG assistant using FastAPI and ChromaDB."
+# prompt1 = resume_analysis_prompt(resume_text)
+# print(ask_gemini(prompt1))
+
+# # 2. Classification
+# farmer_query = "আমার ধান গাছে পোকা লেগেছে, কী করব?"
+# prompt2 = classification_prompt(
+#     farmer_query, ["pest_control", "irrigation", "fertilizer", "other"]
+# )
+# print(ask_gemini(prompt2))
+
+# # 3. Summarization with custom word limit
+# long_text = "..."  # কোনো লম্বা article
+# prompt3 = summarizer_prompt(long_text, max_words=30)
+# print(ask_gemini(prompt3))
