@@ -644,35 +644,31 @@
 #     print(f"Total cost: {calculate_cost(input_token, output_token)}")
 
 
-
 # CLI chatbot with conversation history
 
 import os
+import json
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+client = genai.Client(api_key=api_key)
 
 history = []
 while True:
     prompt = input("\nQuestion: ")
     if prompt.lower().strip() == "exit":
+        with open("history.json", "w") as file:
+            file.write(json.dumps(history) + "\n")
         break
     if prompt == "":
         raise TypeError("Please type a valid question")
-    history.append(
-        {
-            "role": "user",
-            "parts": [{"text": prompt}]
-        }
-    )
+    history.append({"role": "user", "parts": [{"text": prompt}]})
     try:
         response = client.models.generate_content(
-            model = "gemini-3.1-flash-lite",
-            contents = history
+            model="gemini-3.1-flash-lite", contents=history
         )
     except errors.ClientError as e:
         print(e)
@@ -682,10 +678,5 @@ while True:
         print(e)
         history.pop()
         continue
-    history.append(
-        {
-        "role": "model",
-        "parts": [{"text": response.text}]
-        }
-    )
+    history.append({"role": "model", "parts": [{"text": response.text}]})
     print(response.text)
