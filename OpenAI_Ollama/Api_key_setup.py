@@ -646,6 +646,63 @@
 
 # CLI chatbot with conversation history
 
+# import os
+# import json
+# from dotenv import load_dotenv
+# from google import genai
+# from google.genai import errors
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+# history = []
+# while True:
+#     prompt = input("\nQuestion: ")
+#     if prompt.lower().strip() == "exit":
+#         with open("history.json", "w") as file:
+#             file.write(json.dumps(history) + "\n")
+#         break
+#     if prompt == "":
+#         raise TypeError("Please type a valid question")
+#     history.append({"role": "user", "parts": [{"text": prompt}]})
+#     try:
+#         response = client.models.generate_content(
+#             model="gemini-3.1-flash-lite", contents=history
+#         )
+#     except errors.ClientError as e:
+#         print(e)
+#         history.pop()
+#         continue
+#     except Exception as e:
+#         print(e)
+#         history.pop()
+#         continue
+#     history.append({"role": "model", "parts": [{"text": response.text}]})
+#     print(response.text)
+
+
+# import os
+# from dotenv import load_dotenv
+# from google import genai
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# while True:
+#     prompt = input("\nQuestion: ")
+#     if prompt.lower().strip() == "exit":
+#         break
+#     response = client.models.generate_content(
+#         model="gemini-3.1-flash-lite",
+#         contents=prompt
+#     )
+#     print(response.text)
+
+
+# CLI chatbot with conversation history
+
 import os
 import json
 from dotenv import load_dotenv
@@ -664,11 +721,12 @@ while True:
             file.write(json.dumps(history) + "\n")
         break
     if prompt == "":
-        raise TypeError("Please type a valid question")
+        print("Enter valid input")
+        continue
     history.append({"role": "user", "parts": [{"text": prompt}]})
     try:
         response = client.models.generate_content(
-            model="gemini-3.1-flash-lite", contents=history
+            model="gemini-3.5-flash-lite", contents=history
         )
     except errors.ClientError as e:
         print(e)
