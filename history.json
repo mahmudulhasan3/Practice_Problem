@@ -1,1 +1,1 @@
-[]
+[{"role": "user", "parts": [{"text": "I am mahmud"}]}, {"role": "model", "parts": [{"text": "Hello Mahmud! It's nice to meet you. How can I help you today?"}]}, {"role": "user", "parts": [{"text": "what is my name?"}]}, {"role": "model", "parts": [{"text": "Your name is Mahmud! You just told me."}]}]
