@@ -703,38 +703,71 @@
 
 # CLI chatbot with conversation history
 
+# import os
+# import json
+# from dotenv import load_dotenv
+# from google import genai
+# from google.genai import errors
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+# history = []
+# while True:
+#     prompt = input("\nQuestion: ")
+#     if prompt.lower().strip() == "exit":
+#         with open("history.json", "w") as file:
+#             file.write(json.dumps(history) + "\n")
+#         break
+#     if prompt == "":
+#         print("Enter valid input")
+#         continue
+#     history.append({"role": "user", "parts": [{"text": prompt}]})
+#     try:
+#         response = client.models.generate_content(
+#             model="gemini-3.5-flash-lite", contents=history
+#         )
+#     except errors.ClientError as e:
+#         print(e)
+#         history.pop()
+#         continue
+#     except Exception as e:
+#         print(e)
+#         history.pop()
+#         continue
+#     history.append({"role": "model", "parts": [{"text": response.text}]})
+#     print(response.text)
+
+
 import os
-import json
-from dotenv import load_dotenv
 from google import genai
-from google.genai import errors
+from dotenv import load_dotenv
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
+client = genai.Client(api_key= api_key)
 
-history = []
-while True:
-    prompt = input("\nQuestion: ")
-    if prompt.lower().strip() == "exit":
-        with open("history.json", "w") as file:
-            file.write(json.dumps(history) + "\n")
-        break
-    if prompt == "":
-        print("Enter valid input")
-        continue
-    history.append({"role": "user", "parts": [{"text": prompt}]})
-    try:
-        response = client.models.generate_content(
-            model="gemini-3.5-flash-lite", contents=history
-        )
-    except errors.ClientError as e:
-        print(e)
-        history.pop()
-        continue
-    except Exception as e:
-        print(e)
-        history.pop()
-        continue
-    history.append({"role": "model", "parts": [{"text": response.text}]})
-    print(response.text)
+prompt_for_zero_shot = """
+Classify the following text as positive or negative
+Text: I really enjoy football
+"""
+prompt_for_few_shot = """
+Classify the following text as positive or negative
+
+Example-1:
+Text: I enjoy football
+Answer: positive
+
+Example-2:
+Text: I dont play cricket
+Answer: Negative
+
+Text: Cricket is a long time game and few peaple watch it, other people dont watch it
+
+"""
+response = client.models.generate_content(
+    model = "gemini-3.1-flash-lite",
+    contents = prompt_for_few_shot
+)
+print(response.text)
