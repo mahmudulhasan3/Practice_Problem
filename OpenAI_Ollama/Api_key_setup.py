@@ -740,34 +740,138 @@
 #     print(response.text)
 
 
-import os
-from google import genai
-from dotenv import load_dotenv
+# import os
+# from google import genai
+# from dotenv import load_dotenv
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
 
-prompt_for_zero_shot = """
-Classify the following text as positive or negative
-Text: I really enjoy football
-"""
-prompt_for_few_shot = """
-Classify the following text as positive or negative
+# prompt_for_zero_shot = """
+# Classify the following text as positive or negative
+# Text: I really enjoy football
+# """
+# prompt_for_few_shot = """
+# Classify the following text as positive or negative
 
-Example-1:
-Text: I enjoy football
-Answer: positive
+# Example-1:
+# Text: I enjoy football
+# Answer: positive
 
-Example-2:
-Text: I dont play cricket
-Answer: Negative
+# Example-2:
+# Text: I dont play cricket
+# Answer: Negative
 
-Text: Cricket is a long time game and few peaple watch it, other people dont watch it
+# Text: Cricket is a long time game and few peaple watch it, other people dont watch it
 
-"""
-response = client.models.generate_content(
-    model = "gemini-3.1-flash-lite",
-    contents = prompt_for_few_shot
-)
-print(response.text)
+# """
+# response = client.models.generate_content(
+#     model = "gemini-3.1-flash-lite",
+#     contents = prompt_for_few_shot
+# )
+# print(response.text)
+
+
+# import os
+# from dotenv import load_dotenv
+# from google import genai
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# prompt = """
+# Classify this product review as positive or negative
+# Text: I really love phone
+# Answer:
+# """
+
+# response = client.models.generate_content(
+#     model = "gemini-3.1-flash-lite",
+#     contents = prompt
+# )
+# print(response.text)
+
+# import os
+# from dotenv import load_dotenv
+# from google import genai
+
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+# MODEL = "gemini-3.5-flash-lite"
+
+
+# def zero_shot_prompt(query: str) -> str:
+#     prompt = f"""তুমি একজন কৃষি বিশেষজ্ঞ। নিচের ফসলের সমস্যাটি কোন category তে পড়ে বলো:
+# Category গুলো: Pest Issue, Disease Issue, Soil Issue, Weather Issue
+
+# Query: {query}
+
+# শুধু category name টা লিখো, আর কিছু না।"""
+#     response = client.models.generate_content(model=MODEL, contents=prompt)
+#     return response.text
+
+
+# def few_shot_prompt(query: str) -> str:
+#     prompt = f"""তুমি একজন কৃষি বিশেষজ্ঞ। নিচের example গুলো দেখে বুঝো কীভাবে category assign করতে হয়:
+
+# Query: "পাতায় সাদা পোকা দেখা যাচ্ছে"
+# Category: Pest Issue
+
+# Query: "পাতায় হলুদ দাগ ও পচন ধরেছে"
+# Category: Disease Issue
+
+# Query: "মাটি খুব শক্ত হয়ে গেছে, পানি জমছে না"
+# Category: Soil Issue
+
+# Query: "অতিরিক্ত বৃষ্টিতে ফসল ডুবে গেছে"
+# Category: Weather Issue
+
+# এখন নিচের query টা category assign করো:
+
+# Query: {query}
+# Category:"""
+#     response = client.models.generate_content(model=MODEL, contents=prompt)
+#     return response.text
+
+
+# def cot_prompt(query: str) -> str:
+#     prompt = f"""তুমি একজন কৃষি বিশেষজ্ঞ। নিচের সমস্যাটি বিশ্লেষণ করে category বলো।
+
+# Category গুলো: Pest Issue, Disease Issue, Soil Issue, Weather Issue
+
+# Query: {query}
+
+# ধাপে ধাপে চিন্তা করো:
+# 1. সমস্যার মূল লক্ষণ কী?
+# 2. এটা কোন কোন category তে পড়তে পারে?
+# 3. সবচেয়ে likely category কোনটা এবং কেন?
+
+# শেষে "Final Category: [category name]" লিখে শেষ করো।"""
+#     response = client.models.generate_content(model=MODEL, contents=prompt)
+#     return response.text
+
+
+# def compare_all(query: str):
+#     print(f"\n{'='*50}")
+#     print(f"QUERY: {query}")
+#     print(f"{'='*50}")
+#     print("\n--- ZERO-SHOT ---")
+#     print(zero_shot_prompt(query))
+#     print("\n--- FEW-SHOT ---")
+#     print(few_shot_prompt(query))
+#     print("\n--- CHAIN-OF-THOUGHT ---")
+#     print(cot_prompt(query))
+
+
+# if __name__ == "__main__":
+#     query1 = "গাছের গোড়ায় পানি জমে পচে যাচ্ছে, শিকড়ও কালো হয়ে গেছে"
+#     query2 = "তোমার বানানো query"  # Pest vs Disease ধরনের
+#     query3 = "তোমার বানানো query"  # Weather vs Soil ধরনের
+
+#     compare_all(query1)
+#     compare_all(query2)
+#     compare_all(query3)
