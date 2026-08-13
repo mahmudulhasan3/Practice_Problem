@@ -901,41 +901,41 @@
 #     print(response.text)
 
 
-import os
-from dotenv import load_dotenv
-from google import genai
+# import os
+# from dotenv import load_dotenv
+# from google import genai
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
 
 
-history = [
-    {"role": "user", "content": "আমার নাম রহিম"},
-    {"role": "model", "content": "নমস্কার রহিম ভাই"},
-    {"role": "user", "content": "আমি ধান চাষ করি"}
-]
-while True:
-    copy = history.copy()
-    all_contents = []
-    for turn in history:
-        all_contents.append(turn["content"])
-    sentance = " ".join(all_contents)
+# history = [
+#     {"role": "user", "content": "আমার নাম রহিম"},
+#     {"role": "model", "content": "নমস্কার রহিম ভাই"},
+#     {"role": "user", "content": "আমি ধান চাষ করি"}
+# ]
+# while True:
+#     copy = history.copy()
+#     all_contents = []
+#     for turn in history:
+#         all_contents.append(turn["content"])
+#     sentance = " ".join(all_contents)
 
-    system_instruction = "তুমি Farmiqa, কৃষি সহায়ক"
-    user_query = "পোকা লাগলে কী করবো?"
+#     system_instruction = "তুমি Farmiqa, কৃষি সহায়ক"
+#     user_query = "পোকা লাগলে কী করবো?"
 
-    full_text = system_instruction + " " + sentance + " "  + user_query
+#     full_text = system_instruction + " " + sentance + " "  + user_query
 
-    response = client.models.count_tokens(model= "gemini-3.1-flash-lite", contents= full_text)
+#     response = client.models.count_tokens(model= "gemini-3.1-flash-lite", contents= full_text)
 
-    if response.total_tokens <= 20:
-        break
-    if len(copy) == 0:
-        break
+#     if response.total_tokens <= 20:
+#         break
+#     if len(copy) == 0:
+#         break
 
-    copy.pop(0)
-    print("পুরনো turn বাদ দেওয়া হলো")
+#     copy.pop(0)
+#     print("পুরনো turn বাদ দেওয়া হলো")
     
-print(response.total_tokens)
-print(full_text)
+# print(response.total_tokens)
+# print(full_text)
