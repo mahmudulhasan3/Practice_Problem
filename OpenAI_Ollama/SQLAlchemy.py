@@ -119,68 +119,93 @@
 #     session.commit()
 
 
-from sqlalchemy import create_engine, String,Integer,select
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+# from sqlalchemy import create_engine, String,Integer,select
+# from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
+# engine = create_engine("postgresql://mahmud:CS2203009@localhost:5432/practice_db")
+# SessionLocal = sessionmaker(bind= engine)
+
+# class Base(DeclarativeBase):
+#     pass
+
+# class Book(Base):
+#     __tablename__ = "book"
+#     id: Mapped[int] = mapped_column(primary_key= True)
+#     title: Mapped[str] = mapped_column(String(100))
+#     author: Mapped[str] = mapped_column(String(100))
+#     price: Mapped[int] = mapped_column(Integer)
+
+# Base.metadata.create_all(engine)
+# print("Table created successfully")
+
+# with SessionLocal() as session:
+#     book_1 = Book(title="Atomic Habits", author="James Clear", price=450)
+#     book_2 = Book(title= "The Alchemist", author= "Paulo Coelho", price= 380)
+#     book_3 = Book(title= "Deep Work", author= "Cal Newport", price= 620)
+
+#     session.add(book_1)
+#     session.add(book_2)
+#     session.add(book_3)
+#     print("Book insert successfully")
+#     session.commit()
+
+#     book = session.get(Book,1)
+#     if book:
+#         print("Book list-")
+#         print(book.id,book.title, book.author, book.price)
+
+#     stmt = select(Book).where(Book.price > 500)
+#     result = session.execute(stmt).scalars().all()
+
+#     for book in result:
+#         print(book.id, book.title, book.author, book.price)
+#     book = session.get(Book,3)
+#     if book:
+#         book.price = 3455
+#         session.commit()
+#         print("Book updated")
+#     else:
+#         print("Book not found")
+#     book = session.get(Book,3)
+#     if book:
+#         print("Book list-")
+#         print(book.id,book.title, book.author, book.price)
+
+#     book = session.get(Book,2)
+#     if book:
+#         session.delete(book)
+#         session.commit()
+#         print("Book deleted successfully")
+#     else:
+#         print("Book not found")
+
+#     book = session.get(Book,2)
+#     if book:
+#         print(book.id)
+#     else:
+#         print("Book not found")
+
+
+from sqlalchemy import create_engine, String, ForeignKey
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, relationship
 
 engine = create_engine("postgresql://mahmud:CS2203009@localhost:5432/practice_db")
-SessionLocal = sessionmaker(bind= engine)
+
+SessionLocal = sessionmaker()
 
 class Base(DeclarativeBase):
     pass
 
-class Book(Base):
-    __tablename__ = "book"
+class Department(Base):
+    __tablename__ = "authors"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    students: Mapped[list["Student"]] = relationship(back_populates= "department")
+
+class Student(Base):
+    __tablename__ = "student"
     id: Mapped[int] = mapped_column(primary_key= True)
-    title: Mapped[str] = mapped_column(String(100))
-    author: Mapped[str] = mapped_column(String(100))
-    price: Mapped[int] = mapped_column(Integer)
+    name: Mapped[int] = mapped_column(String(100))
+    department_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
+    department: Mapped["Department"] = relationship(back_populates= "student")
 
-Base.metadata.create_all(engine)
-print("Table created successfully")
-
-with SessionLocal() as session:
-    book_1 = Book(title="Atomic Habits", author="James Clear", price=450)
-    book_2 = Book(title= "The Alchemist", author= "Paulo Coelho", price= 380)
-    book_3 = Book(title= "Deep Work", author= "Cal Newport", price= 620)
-
-    session.add(book_1)
-    session.add(book_2)
-    session.add(book_3)
-    print("Book insert successfully")
-    session.commit()
-
-    book = session.get(Book,1)
-    if book:
-        print("Book list-")
-        print(book.id,book.title, book.author, book.price)
-
-    stmt = select(Book).where(Book.price > 500)
-    result = session.execute(stmt).scalars().all()
-
-    for book in result:
-        print(book.id, book.title, book.author, book.price)
-    book = session.get(Book,3)
-    if book:
-        book.price = 3455
-        session.commit()
-        print("Book updated")
-    else:
-        print("Book not found")
-    book = session.get(Book,3)
-    if book:
-        print("Book list-")
-        print(book.id,book.title, book.author, book.price)
-
-    book = session.get(Book,2)
-    if book:
-        session.delete(book)
-        session.commit()
-        print("Book deleted successfully")
-    else:
-        print("Book not found")
-
-    book = session.get(Book,2)
-    if book:
-        print(book.id)
-    else:
-        print("Book not found")
