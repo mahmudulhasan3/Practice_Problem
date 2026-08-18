@@ -209,3 +209,10 @@ class Student(Base):
     department_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
     department: Mapped["Department"] = relationship(back_populates= "student")
 
+class Teacher(Base):
+    __tablename__ = "teacher"
+    id: Mapped[int] = mapped_column(primary_key= True)
+    name: Mapped[str] = mapped_column(String(100))
+    department_id: Mapped[int] = mapped_column(ForeignKey("student.id"))
+    department: Mapped["Student"] = relationship(back_populates= "teacher")
+    
