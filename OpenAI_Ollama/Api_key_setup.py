@@ -936,6 +936,6 @@
 
 #     copy.pop(0)
 #     print("পুরনো turn বাদ দেওয়া হলো")
-    
+
 # print(response.total_tokens)
 # print(full_text)

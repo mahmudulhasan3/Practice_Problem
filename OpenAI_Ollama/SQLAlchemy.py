@@ -186,33 +186,33 @@
 #         print("Book not found")
 
 
-from sqlalchemy import create_engine, String, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, relationship
+# from sqlalchemy import create_engine, String, ForeignKey
+# from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, relationship
 
-engine = create_engine("postgresql://mahmud:CS2203009@localhost:5432/practice_db")
+# engine = create_engine("postgresql://mahmud:CS2203009@localhost:5432/practice_db")
 
-SessionLocal = sessionmaker()
+# SessionLocal = sessionmaker()
 
-class Base(DeclarativeBase):
-    pass
+# class Base(DeclarativeBase):
+#     pass
 
-class Department(Base):
-    __tablename__ = "authors"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
-    students: Mapped[list["Student"]] = relationship(back_populates= "department")
+# class Department(Base):
+#     __tablename__ = "authors"
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     name: Mapped[str] = mapped_column(String(100))
+#     students: Mapped[list["Student"]] = relationship(back_populates= "department")
 
-class Student(Base):
-    __tablename__ = "student"
-    id: Mapped[int] = mapped_column(primary_key= True)
-    name: Mapped[int] = mapped_column(String(100))
-    department_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
-    department: Mapped["Department"] = relationship(back_populates= "student")
+# class Student(Base):
+#     __tablename__ = "student"
+#     id: Mapped[int] = mapped_column(primary_key= True)
+#     name: Mapped[int] = mapped_column(String(100))
+#     department_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
+#     department: Mapped["Department"] = relationship(back_populates= "student")
 
-class Teacher(Base):
-    __tablename__ = "teacher"
-    id: Mapped[int] = mapped_column(primary_key= True)
-    name: Mapped[str] = mapped_column(String(100))
-    department_id: Mapped[int] = mapped_column(ForeignKey("student.id"))
-    department: Mapped["Student"] = relationship(back_populates= "teacher")
+# class Teacher(Base):
+#     __tablename__ = "teacher"
+#     id: Mapped[int] = mapped_column(primary_key= True)
+#     name: Mapped[str] = mapped_column(String(100))
+#     department_id: Mapped[int] = mapped_column(ForeignKey("student.id"))
+#     department: Mapped["Student"] = relationship(back_populates= "teacher")
     
