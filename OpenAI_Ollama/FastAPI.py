@@ -52,3 +52,57 @@
 #         return result
 #     return students
 
+# from fastapi import FastAPI,HTTPException
+# from pydantic import BaseModel
+# from typing import Optional
+
+# app = FastAPI()
+
+# class Student(BaseModel):
+#     name: str
+#     age: int
+#     email: Optional[str] = None
+#     cgpa: float
+
+
+# @app.post("/student")
+# async def student(s:Student):
+#     return{
+#         "name": s.name
+#     }
+
+from fastapi import FastAPI
+from pydantic import BaseModel,Field
+from typing import Any, Optional
+
+app = FastAPI()
+
+class BookCreate(BaseModel):
+    title: str 
+    author: str
+    price: float
+
+@app.post("/books")
+async def book(book: BookCreate):
+    return{
+        "title": book.title,
+        "author": book.author,
+        "price": book.price
+    }
+
+class UserCreate(BaseModel):
+    username: str = Field(min_length= 3)
+    age: int = Field(ge= 18)
+    bio: Optional[str] = None
+
+
+class UserResponse(BaseModel):
+    username: str = Field(min_length= 3)
+    age: int = Field(ge= 18)
+
+@app.post("/users", response_model=UserResponse)
+async def users(user:UserCreate):
+    return{
+        "username": user.username,
+        "age": user.age
+    }
