@@ -71,38 +71,55 @@
 #         "name": s.name
 #     }
 
-from fastapi import FastAPI
-from pydantic import BaseModel,Field
-from typing import Any, Optional
+# from fastapi import FastAPI
+# from pydantic import BaseModel,Field
+# from typing import Any, Optional
 
-app = FastAPI()
+# app = FastAPI()
 
-class BookCreate(BaseModel):
-    title: str 
-    author: str
-    price: float
+# class BookCreate(BaseModel):
+#     title: str
+#     author: str
+#     price: float
 
-@app.post("/books")
-async def book(book: BookCreate):
-    return{
-        "title": book.title,
-        "author": book.author,
-        "price": book.price
-    }
+# @app.post("/books")
+# async def book(book: BookCreate):
+#     return{
+#         "title": book.title,
+#         "author": book.author,
+#         "price": book.price
+#     }
 
-class UserCreate(BaseModel):
-    username: str = Field(min_length= 3)
-    age: int = Field(ge= 18)
-    bio: Optional[str] = None
+# class UserCreate(BaseModel):
+#     username: str = Field(min_length= 3)
+#     age: int = Field(ge= 18)
+#     bio: Optional[str] = None
 
 
-class UserResponse(BaseModel):
-    username: str = Field(min_length= 3)
-    age: int = Field(ge= 18)
+# class UserResponse(BaseModel):
+#     username: str = Field(min_length= 3)
+#     age: int = Field(ge= 18)
 
-@app.post("/users", response_model=UserResponse)
-async def users(user:UserCreate):
-    return{
-        "username": user.username,
-        "age": user.age
-    }
+# @app.post("/users", response_model=UserResponse)
+# async def users(user:UserCreate):
+#     return{
+#         "username": user.username,
+#         "age": user.age
+#     }
+
+
+# from fastapi import FastAPI,UploadFile, File,HTTPException
+# from pydantic import BaseModel
+# import os
+# app = FastAPI()
+# UPLOAD_DIR = "uploads"
+# os.makedirs(UPLOAD_DIR,exist_ok = True)
+# os.path.join(UPLOAD_DIR)
+# @app.post("/uploads")
+# async def file_upload(file:UploadFile = File(...)):
+#     content = await file.read()
+#     return {
+#             "filename": file.filename,
+#             "file_content": file.content_type,
+#             "content": len(content)
+#         }
