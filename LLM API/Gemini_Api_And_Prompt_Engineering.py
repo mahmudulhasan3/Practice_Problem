@@ -81,34 +81,62 @@
 # print(model_info.output_token_limit)
 # print(model_info.input_token_limit)
 
+# from google import genai
+# from dotenv import load_dotenv
+# import os, time
+
+# load_dotenv()
+
+
+# def get_required_key(key):
+#     value = os.getenv(key)
+#     if not value:
+#         raise ValueError(f"Check .env file {key}")
+#     return value
+
+
+# api_key = get_required_key("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+# model_name = get_required_key("GEMINI_MODEL_NAME")
+
+# for i in range(4):
+#     response = client.models.generate_content(
+#         model=model_name,
+#         contents="give me one word to describe happy",
+#         config={
+#             "temperature": 1.5,
+#             "top_p": 0.9,
+#             "top_k": 3
+#         }
+#     )
+#     time.sleep(1)
+#     print(response.text)
+
 from google import genai
 from dotenv import load_dotenv
-import os, time
+import os
 
 load_dotenv()
-
 
 def get_required_key(key):
     value = os.getenv(key)
     if not value:
-        raise ValueError(f"Check .env file {key}")
+        raise ValueError(f"{key} is not found")
     return value
 
-
 api_key = get_required_key("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
+client = genai.Client(api_key= api_key)
 
 model_name = get_required_key("GEMINI_MODEL_NAME")
 
-for i in range(4):
-    response = client.models.generate_content(
-        model=model_name,
-        contents="give me one word to describe happy",
-        config={
-            "temperature": 1.5,
-            "top_p": 0.9,
-            "top_k": 3
-        }
-    )
-    time.sleep(1)
-    print(response.text)
+response = client.models.generate_content_stream(
+    model=model_name, contents="Explain what a REST API is, in 3 sentences.",
+    config={
+        "temperature": 0.3,
+        "max_output_tokens": 150,
+        "top_p": 0.9
+    }
+)
+for stream in response:
+    print(stream.text, end= "", flush= True)
