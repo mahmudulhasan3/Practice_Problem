@@ -113,11 +113,67 @@
 #     time.sleep(1)
 #     print(response.text)
 
+# from google import genai
+# from dotenv import load_dotenv
+# import os
+
+# load_dotenv()
+
+# def get_required_key(key):
+#     value = os.getenv(key)
+#     if not value:
+#         raise ValueError(f"{key} is not found")
+#     return value
+
+# api_key = get_required_key("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# model_name = get_required_key("GEMINI_MODEL_NAME")
+
+# response = client.models.generate_content_stream(
+#     model=model_name, contents="Explain what a REST API is, in 3 sentences.",
+#     config={
+#         "temperature": 0.3,
+#         "max_output_tokens": 150,
+#         "top_p": 0.9
+#     }
+# )
+# for stream in response:
+#     print(stream.text, end= "", flush= True)
+
+
+# from google import genai
+# from dotenv import load_dotenv
+# import os
+
+# load_dotenv()
+
+# def get_required_key(key):
+#     value = os.getenv(key)
+#     if not value:
+#         raise ValueError(f"{key} is not found")
+#     return value
+
+# api_key = get_required_key("GEMINI_API_KEY")
+# client = genai.Client(api_key=api_key)
+
+# model_name = get_required_key("GEMINI_MODEL_NAME")
+
+# prompt= """A store had 23 apples. They sold 8 and bought 15 more.
+#  How many apples now? Let's think step by step."""
+# response = client.models.generate_content(
+#     model=model_name,
+#     contents= prompt,
+# )
+
+# print(response.text.strip())
+
 from google import genai
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
 
 def get_required_key(key):
     value = os.getenv(key)
@@ -125,18 +181,20 @@ def get_required_key(key):
         raise ValueError(f"{key} is not found")
     return value
 
+
 api_key = get_required_key("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+client = genai.Client(api_key=api_key)
 
 model_name = get_required_key("GEMINI_MODEL_NAME")
 
-response = client.models.generate_content_stream(
-    model=model_name, contents="Explain what a REST API is, in 3 sentences.",
-    config={
-        "temperature": 0.3,
-        "max_output_tokens": 150,
-        "top_p": 0.9
-    }
+prompt = """
+What is 8473 multiplied by 6291? 
+Let's think step by step, breaking down the multiplication, 
+then give the final answer.
+"""
+response = client.models.generate_content(
+    model=model_name,
+    contents=prompt,
 )
-for stream in response:
-    print(stream.text, end= "", flush= True)
+
+print(response.text)
