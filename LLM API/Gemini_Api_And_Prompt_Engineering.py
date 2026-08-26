@@ -200,41 +200,66 @@
 # print(response.text)
 
 
-from google import genai
-from dotenv import load_dotenv
-from pydantic import BaseModel, Field, field_validator
-import os
+# from google import genai
+# from dotenv import load_dotenv
+# from pydantic import BaseModel, Field, field_validator
+# import os
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
 
-model_name = os.getenv("GEMINI_MODEL_NAME")
-if not model_name:
-    raise ValueError("Model name not found")
-class Base(BaseModel):
-    name: str
-    email: str | None
-    skills: list[str]
-    experience: int = Field(ge=0)
+# model_name = os.getenv("GEMINI_MODEL_NAME")
+# if not model_name:
+#     raise ValueError("Model name not found")
+# class Base(BaseModel):
+#     name: str
+#     email: str | None
+#     skills: list[str]
+#     experience: int = Field(ge=0)
 
-    @field_validator("email")
-    @classmethod
-    def check_email(cls, value):
-        if value is not None and "@" not in value:
-            raise ValueError("Invalid email formet")
-        return value
+#     @field_validator("email")
+#     @classmethod
+#     def check_email(cls, value):
+#         if value is not None and "@" not in value:
+#             raise ValueError("Invalid email formet")
+#         return value
 
 
-response = client.models.generate_content(
-    model= model_name,
-    contents= """আমার নাম Mahmud, email: mahmudexample.com। 
-আমি Python, FastAPI এবং SQL এ কাজ করি। 
-আমার ২ বছরের experience আছে।""",
-    config= {
-        "response_mime_type": "application/json",
-        "response_schema": Base
-    }
-)
-person = Base.model_validate_json(response.text)
-print(person)
+# response = client.models.generate_content(
+#     model= model_name,
+#     contents= """আমার নাম Mahmud, email: mahmudexample.com। 
+# আমি Python, FastAPI এবং SQL এ কাজ করি। 
+# আমার ২ বছরের experience আছে।""",
+#     config= {
+#         "response_mime_type": "application/json",
+#         "response_schema": Base
+#     }
+# )
+# person = Base.model_validate_json(response.text)
+# print(person)
+
+# import google.genai as genai
+# from dotenv import load_dotenv
+# import os,time
+# from google.genai.types import HttpOptions
+
+# load_dotenv()
+
+# def get_required_key(key):
+#     value = os.getenv(key)
+#     if not value:
+#         raise ValueError(f"Not found {key}")
+#     return value
+
+# api_key = get_required_key("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key, http_options= HttpOptions(timeout= 100000))
+
+# model_name = get_required_key("GEMINI_MODEL_NAME")
+
+# response = client.models.generate_content(
+#     model = model_name,
+#     contents = "What is ai, give me 3 sentence",
+# )
+# print(response.text)
+# print(response.usage_metadata.prompt_token_count)
