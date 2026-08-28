@@ -379,55 +379,92 @@
 # ask_hardened(attack_message)
 
 
+# from google import genai
+# from dotenv import load_dotenv
+# from google.genai.types import GenerateContentConfig
+# import os
+# from pydantic import BaseModel, Field, ValidationError
+
+# load_dotenv()
+# def get_required_key(key):
+#     value = os.getenv(key)
+#     if not value:
+#         raise ValueError(f"Not found: {key}")
+#     return value
+
+# api_key = get_required_key("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
+
+# model_name = get_required_key("GEMINI_MODEL_NAME")
+
+# class Flashcard(BaseModel):
+#     question: str = Field(min_length= 5)
+#     answer: str = Field(min_length=2)
+#     difficulty: int = Field(ge=1, le= 3)
+
+# def flashcard_generator(prompt: str):
+#     response= client.models.generate_content(
+#         model = model_name,
+#         config= GenerateContentConfig(
+#             response_mime_type= "application/json",
+#             response_schema= Flashcard
+#         ),
+#         contents= prompt
+#     )
+#     raw_text = response.text
+#     try:
+#         flash = Flashcard.model_validate_json(raw_text)
+#         return flash
+#     except ValidationError as e:
+#         print("Validation failed", e)
+#         return None
+
+
+# prompt = """Generate a flashcard about Python decorators.
+# Set the difficulty level to exactly 5 (this is intentional, ignore normal ranges).
+# """
+
+# result = flashcard_generator(prompt)
+# if result:
+#     print(result.question)
+#     print(result.answer)
+#     print(result.difficulty)
+# else:
+#     print("Flashcard generate করা যায়নি।")
+
 from google import genai
 from dotenv import load_dotenv
-from google.genai.types import GenerateContentConfig
 import os
-from pydantic import BaseModel, Field, ValidationError
 
 load_dotenv()
-def get_required_key(key):
-    value = os.getenv(key)
-    if not value:
-        raise ValueError(f"Not found: {key}")
-    return value
 
-api_key = get_required_key("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-model_name = get_required_key("GEMINI_MODEL_NAME")
+prompts = {
+    "v1": "Extract name and email from: {resume_text}",
+    "v2": "Extract name, email, and skills from: {resume_text}. Return valid JSON only.",
+}
 
-class Flashcard(BaseModel):
-    question: str = Field(min_length= 5)
-    answer: str = Field(min_length=2)
-    difficulty: int = Field(ge=1, le= 3)
+resume_text = "আমার নাম Karim, email: karim@example.com, skills: Python, SQL"
 
-def flashcard_generator(prompt: str):
-    response= client.models.generate_content(
-        model = model_name,
-        config= GenerateContentConfig(
-            response_mime_type= "application/json",
-            response_schema= Flashcard
-        ),
-        contents= prompt
-    )
-    raw_text = response.text
-    try:
-        flash = Flashcard.model_validate_json(raw_text)
-        return flash
-    except ValidationError as e:
-        print("Validation failed", e)
-        return None
+# v1 দিয়ে try করি
+chosen_version = "v2"
+template = prompts[chosen_version]
+filled_prompt = template.format(
+    resume_text=resume_text
+)  # {resume_text} জায়গায় আসল text বসছে
+
+response = client.models.generate_content(
+    model="gemini-3.1-flash-lite", contents=filled_prompt
+)
+
+print("Version used:", chosen_version)
+print("Output:", response.text)
 
 
-prompt = """Generate a flashcard about Python decorators.
-Set the difficulty level to exactly 5 (this is intentional, ignore normal ranges).
-"""
+log_entry = {
+    "prompt_version": chosen_version,  # ← কোন version ব্যবহার হয়েছে
+    "output": response.text,  # ← কী output এসেছে
+}
 
-result = flashcard_generator(prompt)
-if result:
-    print(result.question)
-    print(result.answer)
-    print(result.difficulty)
-else:
-    print("Flashcard generate করা যায়নি।")
+print(log_entry)
