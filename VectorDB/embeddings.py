@@ -42,28 +42,28 @@
 #     print(f"Chunk: {i}, {chunks[i][:5]}, len: {len(emb.values)}")
 
 
-from google import genai
-from dotenv import load_dotenv
-from google.genai import types
-import os
+# from google import genai
+# from dotenv import load_dotenv
+# from google.genai import types
+# import os
 
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key= api_key)
+# load_dotenv()
+# api_key = os.getenv("GEMINI_API_KEY")
+# client = genai.Client(api_key= api_key)
 
-sentences = [
-    "The cat is sleeping on the sofa.",
-    "A dog is playing in the garden.",
-    "My cat loves to chase mice at night.",
-    "FastAPI is a modern Python web framework for building APIs.",
-    "Python's async support makes FastAPI very fast.",
-]
-response = client.models.embed_content(
-    model= "gemini-embedding-001",
-    contents= sentences,
-    config= types.EmbedContentConfig(
-        output_dimensionality= 256
-    )
-)
-for i, emb in enumerate(response.embeddings):
-    print(f"chunk: {i}, {sentences[i]}, {len(emb.values)}")
+# sentences = [
+#     "The cat is sleeping on the sofa.",
+#     "A dog is playing in the garden.",
+#     "My cat loves to chase mice at night.",
+#     "FastAPI is a modern Python web framework for building APIs.",
+#     "Python's async support makes FastAPI very fast.",
+# ]
+# response = client.models.embed_content(
+#     model= "gemini-embedding-001",
+#     contents= sentences,
+#     config= types.EmbedContentConfig(
+#         output_dimensionality= 256
+#     )
+# )
+# for i, emb in enumerate(response.embeddings):
+#     print(f"chunk: {i}, {sentences[i]}, {len(emb.values)}")
