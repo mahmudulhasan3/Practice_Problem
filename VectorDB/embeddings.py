@@ -195,62 +195,87 @@
 # print(collection.get(where= {"topic": "introduction"}))
 
 
+# import chromadb
+
+# client = chromadb.PersistentClient(path="./chroma_db")
+# collection = client.get_or_create_collection(name="personal_kb")
+
+# collection.add(
+#     ids=["kb_1", "kb_2", "kb_3", "kb_4", "kb_5"],
+#     documents=[
+#         "NITER CSE",
+#         "Attendance minimum 75%",
+#         "Library open 8AM-10PM",
+#         "ID: CS-2203009",
+#         "AI/LLM Engineer",
+#     ],
+#     metadatas=[
+#         {"topic": "education", "source": "personal"},
+#         {"topic": "academic_rule", "source": "university_docs"},
+#         {"topic": "academic_rule", "source": "university_docs"},
+#         {"topic": "personal_info", "source": "personal"},
+#         {"topic": "career_goal", "source": "personal"},
+#     ],
+# )
+
+# print(collection.get(ids=["kb_1"]))
+
+# print(collection.get(where={"topic": "academic_rule"}))
+
+# collection.update(ids=["kb_1"], documents=["NITER CSE 4th year"])
+
+# print(collection.get(ids=["kb_1"]))
+
+# collection.upsert(
+#     ids=["kb_1", "kb_6"],
+#     documents=["NITER CSE", "Who are you"],
+#     metadatas=[
+#         {"topic": "education", "source": "personal"},
+#         {"topic": "introduction", "source": "personal"},
+#     ],
+# )
+
+# print(collection.get(ids=["kb_1", "kb_6"]))
+
+# collection.delete(ids=["kb_6"])
+
+# print(collection.get(ids=["kb_6"]))
+
+
+# def print_all_document(collection):
+#     result = collection.get()
+#     for ids, documents, metadatas in zip(
+#         result["ids"], result["documents"], result["metadatas"]
+#     ):
+#         print(f"ID: {ids}")
+#         print(f"Text: {documents}")
+#         print(f"Metadata: {metadatas}")
+#         print("-" * 40)
+
+
+# print_all_document(collection)
+
+
 import chromadb
 
 client = chromadb.PersistentClient(path="./chroma_db")
-collection = client.get_or_create_collection(name="personal_kb")
+
+collection = client.get_or_create_collection(name="practice_b")
 
 collection.add(
-    ids=["kb_1", "kb_2", "kb_3", "kb_4", "kb_5"],
     documents=[
-        "NITER CSE",
-        "Attendance minimum 75%",
-        "Library open 8AM-10PM",
-        "ID: CS-2203009",
-        "AI/LLM Engineer",
+        "I love playing football",
+        "I enjoy playing soccer",
+        "The weather is very cold today",
     ],
-    metadatas=[
-        {"topic": "education", "source": "personal"},
-        {"topic": "academic_rule", "source": "university_docs"},
-        {"topic": "academic_rule", "source": "university_docs"},
-        {"topic": "personal_info", "source": "personal"},
-        {"topic": "career_goal", "source": "personal"},
-    ],
+    ids=["doc1", "doc2", "doc3"],
 )
 
-print(collection.get(ids=["kb_1"]))
-
-print(collection.get(where={"topic": "academic_rule"}))
-
-collection.update(ids=["kb_1"], documents=["NITER CSE 4th year"])
-
-print(collection.get(ids=["kb_1"]))
-
-collection.upsert(
-    ids=["kb_1", "kb_6"],
-    documents=["NITER CSE", "Who are you"],
-    metadatas=[
-        {"topic": "education", "source": "personal"},
-        {"topic": "introduction", "source": "personal"},
-    ],
+result = collection.query(
+    query_texts= ["I love football"],
+    n_results= 3
 )
 
-print(collection.get(ids=["kb_1", "kb_6"]))
-
-collection.delete(ids=["kb_6"])
-
-print(collection.get(ids=["kb_6"]))
-
-
-def print_all_document(collection):
-    result = collection.get()
-    for ids, documents, metadatas in zip(
-        result["ids"], result["documents"], result["metadatas"]
-    ):
-        print(f"ID: {ids}")
-        print(f"Text: {documents}")
-        print(f"Metadata: {metadatas}")
-        print("-" * 40)
-
-
-print_all_document(collection)
+print(result["ids"])
+print(result["documents"])
+print(result["distances"])
