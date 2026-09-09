@@ -256,26 +256,66 @@
 # print_all_document(collection)
 
 
+# import chromadb
+# from chromadb.utils import embedding_functions
+
+# client = chromadb.PersistentClient(path="./chroma_db")
+
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
+
+# collection = client.get_or_create_collection(
+#     name="practice_b",
+#     embedding_function=default_ef,
+# )
+
+# collection.add(
+#     documents=[
+#         "I love playing football",
+#         "I enjoy playing soccer",
+#         "The weather is very cold today",
+#     ],
+#     ids=["doc1", "doc2", "doc3"],
+# )
+
+# result = collection.query(query_texts=["I love football"], n_results=3)
+
+# print(result["ids"])
+# print(result["documents"])
+# print(result["distances"])
+
+# result = collection.query(
+#     query_texts=["I love playing football"],  # doc1-এর সাথে হুবহু মিল
+#     n_results=1,
+# )
+
+# print(result["distances"])
+
+
 import chromadb
+
+from chromadb.utils import embedding_functions
 
 client = chromadb.PersistentClient(path="./chroma_db")
 
-collection = client.get_or_create_collection(name="practice_b")
+default_ef = embedding_functions.DefaultEmbeddingFunction()
+
+collection = client.get_or_create_collection(
+    name="practice_day62",
+    embedding_function=default_ef,  # type: ignore
+)
 
 collection.add(
+    ids=["doc1", "doc2", "doc3", "doc4", "doc5"],
     documents=[
-        "I love playing football",
-        "I enjoy playing soccer",
-        "The weather is very cold today",
+        "I love eating pizza",
+        "Pasta is my favorite Italian food",
+        "I enjoy hiking in the mountains",
+        "Swimming is a great exercise",
+        "The stock market crashed today",
     ],
-    ids=["doc1", "doc2", "doc3"],
 )
 
-result = collection.query(
-    query_texts= ["I love football"],
-    n_results= 3
-)
+result = collection.query(query_texts=["exercise and fitness"], n_results=1)
 
-print(result["ids"])
 print(result["documents"])
 print(result["distances"])
