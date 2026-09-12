@@ -291,31 +291,96 @@
 # print(result["distances"])
 
 
-import chromadb
+# import chromadb
 
+# from chromadb.utils import embedding_functions
+
+# client = chromadb.PersistentClient(path="./chroma_db")
+
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
+
+# collection = client.get_or_create_collection(
+#     name="practice_day62",
+#     embedding_function=default_ef,  # type: ignore
+# )
+
+# collection.add(
+#     ids=["doc1", "doc2", "doc3", "doc4", "doc5"],
+#     documents=[
+#         "I love eating pizza",
+#         "Pasta is my favorite Italian food",
+#         "I enjoy hiking in the mountains",
+#         "Swimming is a great exercise",
+#         "The stock market crashed today",
+#     ],
+# )
+
+# result = collection.query(query_texts=["exercise and fitness"], n_results=1)
+
+# print(result["documents"])
+# print(result["distances"])
+
+
+import chromadb
 from chromadb.utils import embedding_functions
 
 client = chromadb.PersistentClient(path="./chroma_db")
-
 default_ef = embedding_functions.DefaultEmbeddingFunction()
-
 collection = client.get_or_create_collection(
-    name="practice_day62",
-    embedding_function=default_ef,  # type: ignore
+    name="practice_db", embedding_function=default_ef
 )
 
 collection.add(
-    ids=["doc1", "doc2", "doc3", "doc4", "doc5"],
     documents=[
-        "I love eating pizza",
-        "Pasta is my favorite Italian food",
-        "I enjoy hiking in the mountains",
-        "Swimming is a great exercise",
-        "The stock market crashed today",
+        # --- Python exception handling related (relevant group) ---
+        "In Python, try and except blocks are used to catch and handle errors gracefully.",
+        "You can raise a custom exception in Python using the raise keyword with an Exception class.",
+        "The finally block in Python always executes, whether an exception occurred or not.",
+        "Using multiple except blocks lets you handle different error types separately in Python.",
+        # --- Completely unrelated topics (irrelevant group) ---
+        "The FIFA World Cup is held every four years and features the best football teams globally.",
+        "Heavy rainfall is expected this week due to a low-pressure system over the Bay of Bengal.",
+        "Biryani is a popular rice dish made with spices, meat, and aromatic basmati rice.",
+        "The new smartphone features a faster processor and improved battery life.",
+        "Cricket World Cup matches attract millions of viewers across South Asia.",
+        "A balanced diet includes proteins, carbohydrates, vitamins, and minerals.",
+    ],
+    ids=[
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "doc6",
+        "doc7",
+        "doc8",
+        "doc9",
+        "doc10",
     ],
 )
 
-result = collection.query(query_texts=["exercise and fitness"], n_results=1)
 
-print(result["documents"])
-print(result["distances"])
+def retrieve_with_threshold(collection, query_text, embed_fn, top_k, threshold):
+
+    result = collection.query(query_texts=[query_text], n_results=top_k)
+
+    documents = result["documents"][0]
+    distances = result["distances"][0]
+
+    print("RAW DISTANCES:", distances)
+
+    filtered_doc =[]
+    filtered_dis = []
+    for doc, dis in zip(documents,distances):
+        if dis <= threshold:
+            filtered_doc.append(doc)
+            filtered_dis.append(dis)
+
+    return filtered_doc, filtered_dis
+
+
+print(
+    retrieve_with_threshold(
+        collection, "how to handle errors in python code", default_ef, 10, 1
+    )
+)
