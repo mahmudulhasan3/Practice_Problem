@@ -321,66 +321,120 @@
 # print(result["distances"])
 
 
+# import chromadb
+# from chromadb.utils import embedding_functions
+
+# client = chromadb.PersistentClient(path="./chroma_db")
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
+# collection = client.get_or_create_collection(
+#     name="practice_db", embedding_function=default_ef
+# )
+
+# collection.add(
+#     documents=[
+#         # --- Python exception handling related (relevant group) ---
+#         "In Python, try and except blocks are used to catch and handle errors gracefully.",
+#         "You can raise a custom exception in Python using the raise keyword with an Exception class.",
+#         "The finally block in Python always executes, whether an exception occurred or not.",
+#         "Using multiple except blocks lets you handle different error types separately in Python.",
+#         # --- Completely unrelated topics (irrelevant group) ---
+#         "The FIFA World Cup is held every four years and features the best football teams globally.",
+#         "Heavy rainfall is expected this week due to a low-pressure system over the Bay of Bengal.",
+#         "Biryani is a popular rice dish made with spices, meat, and aromatic basmati rice.",
+#         "The new smartphone features a faster processor and improved battery life.",
+#         "Cricket World Cup matches attract millions of viewers across South Asia.",
+#         "A balanced diet includes proteins, carbohydrates, vitamins, and minerals.",
+#     ],
+#     ids=[
+#         "doc1",
+#         "doc2",
+#         "doc3",
+#         "doc4",
+#         "doc5",
+#         "doc6",
+#         "doc7",
+#         "doc8",
+#         "doc9",
+#         "doc10",
+#     ],
+# )
+
+
+# def retrieve_with_threshold(collection, query_text, embed_fn, top_k, threshold):
+
+#     result = collection.query(query_texts=[query_text], n_results=top_k)
+
+#     documents = result["documents"][0]
+#     distances = result["distances"][0]
+
+#     print("RAW DISTANCES:", distances)
+
+#     filtered_doc =[]
+#     filtered_dis = []
+#     for doc, dis in zip(documents,distances):
+#         if dis <= threshold:
+#             filtered_doc.append(doc)
+#             filtered_dis.append(dis)
+
+#     return filtered_doc, filtered_dis
+
+
+# print(
+#     retrieve_with_threshold(
+#         collection, "how to handle errors in python code", default_ef, 10, 1
+#     )
+# )
+
+
+# University Mini Retrieval System
+
 import chromadb
 from chromadb.utils import embedding_functions
 
-client = chromadb.PersistentClient(path="./chroma_db")
+client = chromadb.PersistentClient(path= "./chroma_db")
+
 default_ef = embedding_functions.DefaultEmbeddingFunction()
+
 collection = client.get_or_create_collection(
-    name="practice_db", embedding_function=default_ef
+    name= "niter_info",
+    embedding_function= default_ef
 )
-
 collection.add(
-    documents=[
-        # --- Python exception handling related (relevant group) ---
-        "In Python, try and except blocks are used to catch and handle errors gracefully.",
-        "You can raise a custom exception in Python using the raise keyword with an Exception class.",
-        "The finally block in Python always executes, whether an exception occurred or not.",
-        "Using multiple except blocks lets you handle different error types separately in Python.",
-        # --- Completely unrelated topics (irrelevant group) ---
-        "The FIFA World Cup is held every four years and features the best football teams globally.",
-        "Heavy rainfall is expected this week due to a low-pressure system over the Bay of Bengal.",
-        "Biryani is a popular rice dish made with spices, meat, and aromatic basmati rice.",
-        "The new smartphone features a faster processor and improved battery life.",
-        "Cricket World Cup matches attract millions of viewers across South Asia.",
-        "A balanced diet includes proteins, carbohydrates, vitamins, and minerals.",
+    documents = [
+        # --- NITER / CSE related (relevant group) ---
+        "NITER offers a Computer Science and Engineering program under the University of Dhaka.",
+        "The CSE department at NITER provides courses in programming, data structures, and software engineering.",
+        "Students at NITER can pursue elective courses such as Machine Learning, NLP, and Data Science.",
+        # --- Unrelated topics (irrelevant group) ---
+        "Messi and Ronaldo are considered two of the greatest football players in history.",
+        "A good cup of tea requires boiling water and steeping the tea leaves for a few minutes.",
+        "Dhaka experiences heavy traffic congestion during office hours on weekdays.",
+        "The latest action movie broke box office records in its opening weekend.",
+        "Regular exercise and a balanced diet contribute to better physical health.",
     ],
-    ids=[
-        "doc1",
-        "doc2",
-        "doc3",
-        "doc4",
-        "doc5",
-        "doc6",
-        "doc7",
-        "doc8",
-        "doc9",
-        "doc10",
-    ],
+
+    ids = ["niter1", "niter2", "niter3", "misc1", "misc2", "misc3", "misc4", "misc5"]
 )
 
+def retrieve_with_threshold(collection, query_text, top_k, threshold):
 
-def retrieve_with_threshold(collection, query_text, embed_fn, top_k, threshold):
-
-    result = collection.query(query_texts=[query_text], n_results=top_k)
-
+    result = collection.query(
+        query_texts = [query_text],
+        n_results = top_k
+    )
     documents = result["documents"][0]
     distances = result["distances"][0]
 
-    print("RAW DISTANCES:", distances)
+    print("Raw distances: ", distances)
 
-    filtered_doc =[]
-    filtered_dis = []
-    for doc, dis in zip(documents,distances):
+    filtered_documents = []
+    filtered_distances = []
+
+    for dis, doc in zip(distances, documents):
         if dis <= threshold:
-            filtered_doc.append(doc)
-            filtered_dis.append(dis)
+            filtered_distances.append(dis)
+            filtered_documents.append(doc)
 
-    return filtered_doc, filtered_dis
+    return filtered_distances, filtered_documents
 
-
-print(
-    retrieve_with_threshold(
-        collection, "how to handle errors in python code", default_ef, 10, 1
-    )
-)
+print(retrieve_with_threshold(collection, "what courses does the CSE department offer", 8, 1.3))
