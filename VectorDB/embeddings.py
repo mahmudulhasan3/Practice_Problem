@@ -386,55 +386,174 @@
 # )
 
 
-# University Mini Retrieval System
+# NITER Mini Retrieval System
 
-import chromadb
-from chromadb.utils import embedding_functions
+# import chromadb
+# from chromadb.utils import embedding_functions
 
-client = chromadb.PersistentClient(path= "./chroma_db")
+# client = chromadb.PersistentClient(path= "./chroma_db")
 
-default_ef = embedding_functions.DefaultEmbeddingFunction()
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
 
-collection = client.get_or_create_collection(
-    name= "niter_info",
-    embedding_function= default_ef
-)
-collection.add(
-    documents = [
-        # --- NITER / CSE related (relevant group) ---
-        "NITER offers a Computer Science and Engineering program under the University of Dhaka.",
-        "The CSE department at NITER provides courses in programming, data structures, and software engineering.",
-        "Students at NITER can pursue elective courses such as Machine Learning, NLP, and Data Science.",
-        # --- Unrelated topics (irrelevant group) ---
-        "Messi and Ronaldo are considered two of the greatest football players in history.",
-        "A good cup of tea requires boiling water and steeping the tea leaves for a few minutes.",
-        "Dhaka experiences heavy traffic congestion during office hours on weekdays.",
-        "The latest action movie broke box office records in its opening weekend.",
-        "Regular exercise and a balanced diet contribute to better physical health.",
-    ],
+# collection = client.get_or_create_collection(
+#     name= "niter_info",
+#     embedding_function= default_ef
+# )
+# collection.add(
+#     documents = [
+#         # --- NITER / CSE related (relevant group) ---
+#         "NITER offers a Computer Science and Engineering program under the University of Dhaka.",
+#         "The CSE department at NITER provides courses in programming, data structures, and software engineering.",
+#         "Students at NITER can pursue elective courses such as Machine Learning, NLP, and Data Science.",
+#         # --- Unrelated topics (irrelevant group) ---
+#         "Messi and Ronaldo are considered two of the greatest football players in history.",
+#         "A good cup of tea requires boiling water and steeping the tea leaves for a few minutes.",
+#         "Dhaka experiences heavy traffic congestion during office hours on weekdays.",
+#         "The latest action movie broke box office records in its opening weekend.",
+#         "Regular exercise and a balanced diet contribute to better physical health.",
+#     ],
 
-    ids = ["niter1", "niter2", "niter3", "misc1", "misc2", "misc3", "misc4", "misc5"]
-)
+#     ids = ["niter1", "niter2", "niter3", "misc1", "misc2", "misc3", "misc4", "misc5"]
+# )
 
-def retrieve_with_threshold(collection, query_text, top_k, threshold):
+# def retrieve_with_threshold(collection, query_text, top_k, threshold):
 
-    result = collection.query(
-        query_texts = [query_text],
-        n_results = top_k
-    )
-    documents = result["documents"][0]
-    distances = result["distances"][0]
+#     result = collection.query(
+#         query_texts = [query_text],
+#         n_results = top_k
+#     )
+#     documents = result["documents"][0]
+#     distances = result["distances"][0]
 
-    print("Raw distances: ", distances)
+#     print("Raw distances: ", distances)
 
-    filtered_documents = []
-    filtered_distances = []
+#     filtered_documents = []
+#     filtered_distances = []
 
-    for dis, doc in zip(distances, documents):
-        if dis <= threshold:
-            filtered_distances.append(dis)
-            filtered_documents.append(doc)
+#     for dis, doc in zip(distances, documents):
+#         if dis <= threshold:
+#             filtered_distances.append(dis)
+#             filtered_documents.append(doc)
 
-    return filtered_distances, filtered_documents
+#     return filtered_distances, filtered_documents
 
-print(retrieve_with_threshold(collection, "what courses does the CSE department offer", 8, 1.3))
+# print(retrieve_with_threshold(collection, "what courses does the CSE department offer", 8, 1.3))
+
+
+# import chromadb
+# import tiktoken
+# from chromadb.utils import embedding_functions
+
+# client = chromadb.PersistentClient(path= "./chroma_db")
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
+# collection = client.get_or_create_collection(
+#     name= "practice_chunk",
+#     embedding_function= default_ef
+# )
+# encoding = tiktoken.get_encoding("cl100k_base")
+
+# text = """The CSE department at NITER has a fixed deadline for thesis submission every year, usually around mid-December. If a student cannot submit on time, they must get written permission from their supervisor to request an extension. Extensions are typically granted for up to one week, but this depends on the department head's approval. If someone still cannot submit even after the extension, they will have to enroll again in the next semester."""
+
+# tokens = encoding.encode(text)
+# print(tokens)
+# print(len(tokens))
+# back_to_text = encoding.decode(tokens)
+# print(back_to_text)
+
+# bangla_text = "ami tomake bhalobashi"
+# english_text = "I love AI"
+
+# bangla_tokens = encoding.encode(bangla_text)
+# english_tokens = encoding.encode(english_text)
+
+# print(f"Bangla: {len(bangla_tokens)} tokens for {len(bangla_text)} characters")
+# print(f"English: {len(english_tokens)} tokens for {len(english_text)} characters")
+
+# # def fixed_chunk_size(text:str, chunk_size:int, overlap:int) -> list:
+
+# #     chunk = []
+# #     start = 0
+
+# #     while start < len(text):
+# #         end = start + chunk_size
+# #         chunk.append(text[start:end])
+# #         start = end-overlap
+
+# #     return chunk
+
+# # print(fixed_chunk_size(text,50, 0))
+
+
+# import tiktoken
+
+# encoding = tiktoken.get_encoding("cl100k_base")
+
+# text = """The CSE department at NITER has a fixed deadline for thesis submission every year, usually around mid-December. If a student cannot submit on time, they must get written permission from their supervisor to request an extension. Extensions are typically granted for up to one week, but this depends on the department head's approval. If someone still cannot submit even after the extension, they will have to enroll again in the next semester."""
+
+
+# def token_based_chunk(text, chunk_size, overlap):
+#     chunk = []
+#     start = 0
+#     tokens = encoding.encode(text)
+
+#     while start < len(tokens):
+#         end = start + chunk_size
+#         token_slice = tokens[start:end]
+#         decode_token = encoding.decode(token_slice)
+#         chunk.append(decode_token)
+#         start = end - overlap
+
+#     return chunk
+
+# print(token_based_chunk(text, 50, 10))
+
+
+import tiktoken
+
+encoding = tiktoken.get_encoding("cl100k_base")
+
+text = """The CSE department at NITER has a fixed deadline for thesis submission every year, usually around mid-December. If a student cannot submit on time, they must get written permission from their supervisor to request an extension. Extensions are typically granted for up to one week, but this depends on the department head's approval. If someone still cannot submit even after the extension, they will have to enroll again in the next semester."""
+
+
+# def sentence_chunk(text):
+#     sentences = text.split(".")
+#     print(len(sentences))
+#     word = 0
+#     chunk = ""
+#     for i in sentences:
+#         if word < 15:
+#             word += sentences
+#         chunk.append(word)
+#     return chunk
+
+# print(sentence_chunk(text))
+
+
+def paragraph_chunk(text: str, word_limit: int) -> list:
+    paragraphs = text.split("\n\n")  
+
+    chunks = []
+    current_chunk = ""
+    current_word_count = 0
+
+    for paragraph in paragraphs:
+        paragraph = paragraph.strip()
+        if paragraph == "":
+            continue
+
+        paragraph_word_count = len(paragraph.split())
+
+        if current_word_count + paragraph_word_count > word_limit:
+            chunks.append(current_chunk.strip())
+            current_chunk = paragraph + "\n\n"
+            current_word_count = paragraph_word_count
+        else:
+            current_chunk += paragraph + "\n\n"
+            current_word_count += paragraph_word_count
+
+    if current_chunk != "":
+        chunks.append(current_chunk.strip())
+
+    return chunks
+
+print(paragraph_chunk(text, 30))
