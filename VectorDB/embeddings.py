@@ -508,52 +508,150 @@
 # print(token_based_chunk(text, 50, 10))
 
 
-import tiktoken
+# import tiktoken
 
-encoding = tiktoken.get_encoding("cl100k_base")
+# encoding = tiktoken.get_encoding("cl100k_base")
 
-text = """The CSE department at NITER has a fixed deadline for thesis submission every year, usually around mid-December. If a student cannot submit on time, they must get written permission from their supervisor to request an extension. Extensions are typically granted for up to one week, but this depends on the department head's approval. If someone still cannot submit even after the extension, they will have to enroll again in the next semester."""
-
-
-# def sentence_chunk(text):
-#     sentences = text.split(".")
-#     print(len(sentences))
-#     word = 0
-#     chunk = ""
-#     for i in sentences:
-#         if word < 15:
-#             word += sentences
-#         chunk.append(word)
-#     return chunk
-
-# print(sentence_chunk(text))
+# text = """The CSE department at NITER has a fixed deadline for thesis submission every year, usually around mid-December. If a student cannot submit on time, they must get written permission from their supervisor to request an extension. Extensions are typically granted for up to one week, but this depends on the department head's approval. If someone still cannot submit even after the extension, they will have to enroll again in the next semester."""
 
 
-def paragraph_chunk(text: str, word_limit: int) -> list:
-    paragraphs = text.split("\n\n")  
+# # def sentence_chunk(text):
+# #     sentences = text.split(".")
+# #     print(len(sentences))
+# #     word = 0
+# #     chunk = ""
+# #     for i in sentences:
+# #         if word < 15:
+# #             word += sentences
+# #         chunk.append(word)
+# #     return chunk
 
-    chunks = []
-    current_chunk = ""
-    current_word_count = 0
+# # print(sentence_chunk(text))
 
-    for paragraph in paragraphs:
-        paragraph = paragraph.strip()
-        if paragraph == "":
-            continue
 
-        paragraph_word_count = len(paragraph.split())
+# def paragraph_chunk(text: str, word_limit: int) -> list:
+#     paragraphs = text.split("\n\n")
 
-        if current_word_count + paragraph_word_count > word_limit:
-            chunks.append(current_chunk.strip())
-            current_chunk = paragraph + "\n\n"
-            current_word_count = paragraph_word_count
-        else:
-            current_chunk += paragraph + "\n\n"
-            current_word_count += paragraph_word_count
+#     chunks = []
+#     current_chunk = ""
+#     current_word_count = 0
 
-    if current_chunk != "":
-        chunks.append(current_chunk.strip())
+#     for paragraph in paragraphs:
+#         paragraph = paragraph.strip()
+#         if paragraph == "":
+#             continue
 
-    return chunks
+#         paragraph_word_count = len(paragraph.split())
 
-print(paragraph_chunk(text, 30))
+#         if current_word_count + paragraph_word_count > word_limit:
+#             chunks.append(current_chunk.strip())
+#             current_chunk = paragraph + "\n\n"
+#             current_word_count = paragraph_word_count
+#         else:
+#             current_chunk += paragraph + "\n\n"
+#             current_word_count += paragraph_word_count
+
+#     if current_chunk != "":
+#         chunks.append(current_chunk.strip())
+
+#     return chunks
+
+# print(paragraph_chunk(text, 30))
+
+
+import chromadb
+from chromadb.utils import embedding_functions
+
+client = chromadb.PersistentClient(path="./chroma_db")
+default_ef = embedding_functions.DefaultEmbeddingFunction()
+collection = client.get_or_create_collection(
+    name="metadata_filtering", embedding_function=default_ef
+)
+
+# collection.add(
+#     ids=["1", "2", "3", "4", "5"],
+#     documents=[
+#         "Newton's second law states F = ma",
+#         "Water boils at 100 degrees Celsius",
+#         "Python is an interpreted language",
+#         "Gravity causes objects to fall",
+#         "For loops iterate over sequences",
+#     ],
+#     metadatas=[
+#         {"topic": "Physics"},
+#         {"topic": "Chemistry"},
+#         {"topic": "Programming"},
+#         {"topic": "Physics"},
+#         {"topic": "Programming"},
+#     ],
+# )
+collection.upsert(
+    ids = ["1", "2", "3", "4", "5", "6"],
+
+    documents = [
+        "Newton's second law states F = ma",
+        "Water boils at 100 degrees Celsius",
+        "Python is an interpreted language",
+        "Gravity causes objects to fall",
+        "For loops iterate over sequences",
+        "Photosynthesis converts sunlight into energy",
+    ],
+
+    metadatas = [
+        {
+            "topic": "Physics",
+            "source": "textbook",
+            "user_id": "userA",
+            "date": "2026-01-15",
+        },
+        {"topic": "Chemistry", "source": "notes", "user_id": "userB", "date": "2026-03-02"},
+        {
+            "topic": "Programming",
+            "source": "textbook",
+            "user_id": "userA",
+            "date": "2026-05-10",
+        },
+        {"topic": "Physics", "source": "notes", "user_id": "userB", "date": "2026-02-20"},
+        {
+            "topic": "Programming",
+            "source": "notes",
+            "user_id": "userA",
+            "date": "2026-06-01",
+        },
+        {
+            "topic": "Biology",
+            "source": "textbook",
+            "user_id": "userB",
+            "date": "2026-04-18",
+        },
+    ]
+)
+
+# result = collection.query(
+#     query_texts=["What is newton second law"],
+#     n_results=3,
+#     where={"$or": [{"topic": "Physics"}, {"source": "textbook"}]},
+# )
+# print(result["documents"])
+# result = collection.query(
+#     query_texts=["What is newton second law"],
+#     n_results=3,
+#     where={"$and": [{"topic": "Physics"}, {"source": "textbook"}]},
+# )
+# print(result["documents"])
+
+# result = collection.query(
+#     query_texts=["What is newton second law"],
+#     n_results=3,
+#     where={"date": {"$gt": "2026-04-18"}},
+# )
+# print(result["documents"])
+
+
+result = collection.query(
+    query_texts=["Newtons law"],
+    n_results= 3,
+    where= {
+        "$and": [{"source": "textbook"}, {"topic": {"$ne": "Biology"}}]}             
+)
+print(result["documents"])
