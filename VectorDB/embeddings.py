@@ -559,99 +559,140 @@
 # print(paragraph_chunk(text, 30))
 
 
-import chromadb
-from chromadb.utils import embedding_functions
+# import chromadb
+# from chromadb.utils import embedding_functions
 
-client = chromadb.PersistentClient(path="./chroma_db")
-default_ef = embedding_functions.DefaultEmbeddingFunction()
-collection = client.get_or_create_collection(
-    name="metadata_filtering", embedding_function=default_ef
-)
+# client = chromadb.PersistentClient(path="./chroma_db")
+# default_ef = embedding_functions.DefaultEmbeddingFunction()
+# collection = client.get_or_create_collection(
+#     name="metadata_filtering", embedding_function=default_ef
+# )
 
-# collection.add(
-#     ids=["1", "2", "3", "4", "5"],
-#     documents=[
+# # collection.add(
+# #     ids=["1", "2", "3", "4", "5"],
+# #     documents=[
+# #         "Newton's second law states F = ma",
+# #         "Water boils at 100 degrees Celsius",
+# #         "Python is an interpreted language",
+# #         "Gravity causes objects to fall",
+# #         "For loops iterate over sequences",
+# #     ],
+# #     metadatas=[
+# #         {"topic": "Physics"},
+# #         {"topic": "Chemistry"},
+# #         {"topic": "Programming"},
+# #         {"topic": "Physics"},
+# #         {"topic": "Programming"},
+# #     ],
+# # )
+# collection.upsert(
+#     ids = ["1", "2", "3", "4", "5", "6"],
+
+#     documents = [
 #         "Newton's second law states F = ma",
 #         "Water boils at 100 degrees Celsius",
 #         "Python is an interpreted language",
 #         "Gravity causes objects to fall",
 #         "For loops iterate over sequences",
+#         "Photosynthesis converts sunlight into energy",
 #     ],
-#     metadatas=[
-#         {"topic": "Physics"},
-#         {"topic": "Chemistry"},
-#         {"topic": "Programming"},
-#         {"topic": "Physics"},
-#         {"topic": "Programming"},
-#     ],
+
+#     metadatas = [
+#         {
+#             "topic": "Physics",
+#             "source": "textbook",
+#             "user_id": "userA",
+#             "date": "2026-01-15",
+#         },
+#         {"topic": "Chemistry", "source": "notes", "user_id": "userB", "date": "2026-03-02"},
+#         {
+#             "topic": "Programming",
+#             "source": "textbook",
+#             "user_id": "userA",
+#             "date": "2026-05-10",
+#         },
+#         {"topic": "Physics", "source": "notes", "user_id": "userB", "date": "2026-02-20"},
+#         {
+#             "topic": "Programming",
+#             "source": "notes",
+#             "user_id": "userA",
+#             "date": "2026-06-01",
+#         },
+#         {
+#             "topic": "Biology",
+#             "source": "textbook",
+#             "user_id": "userB",
+#             "date": "2026-04-18",
+#         },
+#     ]
 # )
-collection.upsert(
-    ids = ["1", "2", "3", "4", "5", "6"],
 
-    documents = [
-        "Newton's second law states F = ma",
-        "Water boils at 100 degrees Celsius",
-        "Python is an interpreted language",
-        "Gravity causes objects to fall",
-        "For loops iterate over sequences",
-        "Photosynthesis converts sunlight into energy",
-    ],
+# # result = collection.query(
+# #     query_texts=["What is newton second law"],
+# #     n_results=3,
+# #     where={"$or": [{"topic": "Physics"}, {"source": "textbook"}]},
+# # )
+# # print(result["documents"])
+# # result = collection.query(
+# #     query_texts=["What is newton second law"],
+# #     n_results=3,
+# #     where={"$and": [{"topic": "Physics"}, {"source": "textbook"}]},
+# # )
+# # print(result["documents"])
 
-    metadatas = [
-        {
-            "topic": "Physics",
-            "source": "textbook",
-            "user_id": "userA",
-            "date": "2026-01-15",
-        },
-        {"topic": "Chemistry", "source": "notes", "user_id": "userB", "date": "2026-03-02"},
-        {
-            "topic": "Programming",
-            "source": "textbook",
-            "user_id": "userA",
-            "date": "2026-05-10",
-        },
-        {"topic": "Physics", "source": "notes", "user_id": "userB", "date": "2026-02-20"},
-        {
-            "topic": "Programming",
-            "source": "notes",
-            "user_id": "userA",
-            "date": "2026-06-01",
-        },
-        {
-            "topic": "Biology",
-            "source": "textbook",
-            "user_id": "userB",
-            "date": "2026-04-18",
-        },
-    ]
-)
+# # result = collection.query(
+# #     query_texts=["What is newton second law"],
+# #     n_results=3,
+# #     where={"date": {"$gt": "2026-04-18"}},
+# # )
+# # print(result["documents"])
+
 
 # result = collection.query(
-#     query_texts=["What is newton second law"],
-#     n_results=3,
-#     where={"$or": [{"topic": "Physics"}, {"source": "textbook"}]},
-# )
-# print(result["documents"])
-# result = collection.query(
-#     query_texts=["What is newton second law"],
-#     n_results=3,
-#     where={"$and": [{"topic": "Physics"}, {"source": "textbook"}]},
-# )
-# print(result["documents"])
-
-# result = collection.query(
-#     query_texts=["What is newton second law"],
-#     n_results=3,
-#     where={"date": {"$gt": "2026-04-18"}},
+#     query_texts=["Newtons law"],
+#     n_results= 3,
+#     where= {
+#         "$and": [{"source": "textbook"}, {"topic": {"$ne": "Biology"}}]}
 # )
 # print(result["documents"])
 
 
-result = collection.query(
-    query_texts=["Newtons law"],
-    n_results= 3,
-    where= {
-        "$and": [{"source": "textbook"}, {"topic": {"$ne": "Biology"}}]}             
-)
-print(result["documents"])
+# import chromadb
+
+# client = chromadb.PersistentClient(path= "./chroma_db")
+# collection = client.get_or_create_collection(name= "niter_db")
+
+# query_text = "NITER এ কি কি CSE course আছে"
+
+# results = collection.query(
+#     query_texts= [query_text],
+#     n_results= 3,
+# )
+# candidate_docs = results["documents"][0]
+# print("Stage 1 (retrieval) order:")
+
+# for dis, doc in enumerate (candidate_docs):
+#     print(dis, doc[:60])
+
+from sentence_transformers import CrossEncoder
+
+# একটা pretrained cross-encoder model লোড করছি
+# এই model বিশেষভাবে "query-document relevance scoring"-এর জন্য train করা
+reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+# Cross-encoder-কে pair বানিয়ে দিতে হয়: [query, document] — প্রতিটা candidate-এর জন্য
+pairs = [[query_text, doc] for doc in candidate_docs]
+
+# predict() প্রতিটা pair-কে একসাথে দেখে একটা relevance score বের করে
+scores = reranker.predict(pairs)
+
+print("\nRaw cross-encoder scores:")
+for doc, score in zip(candidate_docs, scores):
+    print(round(score, 3), "-", doc[:60])
+
+# score আর document একসাথে zip করে, score অনুযায়ী descending sort
+reranked = sorted(zip(candidate_docs, scores), key=lambda x: x[1], reverse=True)
+
+print("\nStage 2 (reranked) order:")
+for doc, score in reranked:
+    print(round(score, 3), "-", doc[:60])
