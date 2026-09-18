@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/mnt/24C24764C2473976/AI Engineer/Program/venv/bin/python" "$0" "$@"
+'''exec' "/mnt/24C24764C2473976/AI Engineer/Program/venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
