@@ -10,7 +10,7 @@
 # def clean_text(text):
 
 #     text = text.strip()
-#     text = re.sub(r" {2,}", " ", text)
+#     text = re.sub(r" {natore2,}", " ", text)
 #     text = re.sub(r"\n{3,}", "\n\n", text)
 
 #     return text
@@ -31,10 +31,17 @@
 
 # from langchain_community.do
 
-import re
+# import re
 
-text = "Hello     World"
+# text = "Hello     World"
 
-text1 = re.sub(r" {2,}", " ", text)
+# text1 = re.sub(r" {2,}", " ", text)
 
-print(text1)
+# print(text1)
+
+text = "recurrent   or\nconvolutional    networks"
+
+words = text.split()
+clean = " ".join(words)
+
+print(clean)
