@@ -1,0 +1,8 @@
+{"id": "q001", "question": "What is the Transformer architecture based on?", "expected_citations": [{"filename": "attention.pdf", "page": 1}], "answerable": true, "category": "single_fact"}
+{"id": "q002", "question": "How many layers does the encoder have?", "expected_citations": [{"filename": "attention.pdf", "page": 3}], "answerable": true, "category": "single_fact"}
+{"id": "q003", "question": "What optimizer was used for training?", "expected_citations": [{"filename": "attention.pdf", "page": 7}], "answerable": true, "category": "single_fact"}
+{"id": "q004", "question": "Why is multi-head attention used?", "expected_citations": [{"filename": "attention.pdf", "page": 4}, {"filename": "attention.pdf", "page": 5}], "answerable": true, "category": "multi_page"}
+{"id": "q005", "question": "How does positional encoding work?", "expected_citations": [{"filename": "attention.pdf", "page": 5}, {"filename": "attention.pdf", "page": 6}], "answerable": true, "category": "multi_page"}
+{"id": "q006", "question": "Compare Transformer and BERT pretraining objectives.", "expected_citations": [{"filename": "attention.pdf", "page": 6}, {"filename": "bert.pdf", "page": 2}], "answerable": true, "category": "multi_pdf"}
+{"id": "q007", "question": "Who won the 2022 FIFA World Cup?", "expected_citations": [], "answerable": false, "category": "out_of_scope"}
+{"id": "q008", "question": "What is the capital of Bangladesh?", "expected_citations": [], "answerable": false, "category": "out_of_scope"}
